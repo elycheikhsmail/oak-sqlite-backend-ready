@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "inittestdb":"",
+    "initdb":"deno run --allow-all cli.ts",
+    "copysql":"deno run --allow-all cli.ts",
+    "start": "deno run --allow-all  run.ts", 
+    "test":"deno test --allow-all --location http://localhost:8080  ./doc-rest-api/test/alltest.test.ts", 
+    
+    "r": "deno run --allow-all ./doc-rest-api/auth/register.ts",
+    "login": "deno run --allow-all --location http://localhost:8080 ./doc-rest-api/auth/login.ts",
+    "gettoken": "deno run --allow-all --location http://localhost:8080 ./doc-rest-api/auth/gettoken.ts",
+    "p": "deno run --allow-all --location http://localhost:8080 ./doc-rest-api/auth/p.ts",
+
+    "todoAdd": "deno run --allow-all --location http://localhost:8080 ./doc-rest-api/api/add.ts",
+    "todoGetAll": "deno run --allow-all --location http://localhost:8080 ./doc-rest-api/api/getall.ts",
+
+    "removedb": "deno run --allow-all   ./src/manage/rm.ts",
+    "copydb":"deno run --allow-all ./doc-rest-api/test/db/copy-empty-db.ts"
+  }
+}

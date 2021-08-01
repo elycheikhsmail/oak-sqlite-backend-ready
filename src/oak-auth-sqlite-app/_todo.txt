@@ -1,0 +1,10 @@
+ 
+la structure de l'app 
+config/
+la config doit etre constitue des cle(str) et valeur(str) mais pas object
+pour qu'il soit facilement verifiable
+ 
+
+validate incoming data with oak validate
+ 
+reviser la response de non auth user

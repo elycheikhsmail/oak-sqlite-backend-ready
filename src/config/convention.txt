@@ -1,0 +1,3 @@
+
+# convention de nommage des apps
+# oak-<keyword>-<dbtype>-app

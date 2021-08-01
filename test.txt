@@ -1,0 +1,10 @@
+export OAK_SQLITE_FILE=_testdb.db  
+trex run copydb
+trex run test
+ 
+
+
+
+
+export OAK_SQLITE_FILE=_testdb.db 
+trex run start 

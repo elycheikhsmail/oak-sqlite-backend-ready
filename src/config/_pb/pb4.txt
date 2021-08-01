@@ -1,0 +1,15 @@
+oak-component
+style guide
+oak_<component name>_<dbtype>_app
+integration instructions
+manage.ts pour gerer les apps:
+verifier les apps des noms des tables
+creer les tables pour chaque apps
+
+creer une squelete oak-sqlite
+creer une squelete oak-mysql
+creer une sqlete d'une 
+
+   
+default project template
+cli cash .oak_component

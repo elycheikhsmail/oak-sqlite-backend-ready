@@ -1,0 +1,6 @@
+comportement bizarre de deno-vscode-ts extension
+le type de return "header" est accepte sauf lorsque il est definie en interface 
+
+leaking ressourse
+
+interface commune entre todoSqliteSql et todoMysqlSql
