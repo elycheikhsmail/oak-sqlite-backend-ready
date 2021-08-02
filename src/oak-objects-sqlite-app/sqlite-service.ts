@@ -1,12 +1,7 @@
 //import client from "../config/db_sqlite_client.ts";
 import sqlObj from "./sqlite-sql.ts";
 import { DB as DbClient } from "./deps.ts";
-interface IObject {
-  objectName: string;
-  itemValue: string;
-  ownerId: number;
-}
-
+import { IObject,IGetByIdAndObjectNameInput } from "./types.ts";
 class SqliteService {
   // tn = tablenale
   tn = "todo_task";
@@ -25,11 +20,20 @@ getAllByObjectName(dbClient: DbClient, ownerId: number,objectName:string) {
 
 
   getById(dbClient: DbClient, ownerId: number, id: number): undefined[][] {
-    const sql = sqlObj.getById();
-    console.log(sql);
+    const sql = sqlObj.getById(); 
     try {
-      const rows = [...dbClient.query(sql, [ownerId, id])];
-      console.log(rows);
+      const rows = [...dbClient.query(sql, [ownerId, id])]; 
+      return rows;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+
+  getByIdAndObjectName(dbClient: DbClient,obj:IGetByIdAndObjectNameInput){
+    const sql = sqlObj.getByIdAndObjectName(); 
+    try {
+      const rows = [...dbClient.query(sql, [obj.ownerId,obj.id,obj.objectName]).asObjects()];
       return rows;
     } catch (error) {
       console.log(error);
@@ -50,10 +54,8 @@ getAllByObjectName(dbClient: DbClient, ownerId: number,objectName:string) {
 
   delete(dbClient: DbClient, id: number) {
     const sql = sqlObj.delete();
-    try {
-      //const deleted =
-      dbClient.query(sql, [id]);
-      //console.log("deleted : ", deleted);
+    try { 
+      dbClient.query(sql, [id]); 
       const dbchanges = dbClient.changes;
       return dbchanges;
     } catch (error) {
@@ -76,8 +78,7 @@ getAllByObjectName(dbClient: DbClient, ownerId: number,objectName:string) {
     const sql = sqlObj.update();
 
     try {
-      await dbClient.query(sql, [itemValue, id]);
-      // console.log("deleted : ", deleted);
+      await dbClient.query(sql, [itemValue, id]); 
       return dbClient.changes;
     } catch (error) {
       console.log({ error });

@@ -11,13 +11,17 @@ convention objectName/public
 -[x] filter et pagination est laisser cote client pour simplifier le backen
 
  
-
+- get by id
 - delete object
 - update object
 - store file
 - convention 
      /api/objects/add/file
      for linking file to a specific object
+
+
+- organisation du code
+deplacer le code middlware de server/midd to middlw folder
 
 - eboutique version
 

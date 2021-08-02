@@ -29,13 +29,16 @@ class SqlObj {
   }
 
 
-  getByIdPublic() {
+  getByIdAndObjectName() {
     let sql = " SELECT * FROM ";
     sql += this.tn;
     sql += " WHERE ";
-    sql += " id = ?  ";
+    sql += " ownerId = ? AND id = ? AND objectName = ?  ";
     return sql;
   }
+
+
+ 
   save() {
     let sql = "INSERT INTO ";
     sql += this.tn;

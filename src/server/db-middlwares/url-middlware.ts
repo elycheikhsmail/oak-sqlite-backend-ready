@@ -5,7 +5,7 @@ export async function logUrlMiddlware(
 ) { 
   try {  
       //console.log(ctx.request.url.pathname)
-      console.log(`${ctx.request.method} : ${ctx.request.url.pathname}`)
+      console.log(`${ctx.request.method} : ${ctx.request.url.href}`)
     await next();
   } catch (error) {
     //console.log(error)

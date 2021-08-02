@@ -23,11 +23,11 @@ class SqliteService {
     return rows;
   }
 
-  getById(dbClient: DbClient, id: number): undefined[][] {
-    const sql = sqlObj.getById();
+  getByIdAndObjectName(dbClient: DbClient, id: number,objectName:string){
+    const sql = sqlObj.getByIdAndObjectName();
     console.log(sql);
     try {
-      const rows = [...dbClient.query(sql, [id])];
+      const rows = [...dbClient.query(sql, [id,objectName]).asObjects()];
       console.log(rows);
       return rows;
     } catch (error) {

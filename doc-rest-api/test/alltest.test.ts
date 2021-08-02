@@ -1,77 +1,91 @@
 import * as t from "https://deno.land/std@0.102.0/testing/asserts.ts";
-import { getBaseUrl, getHeaders } from "./test-helper.ts";
+import { getBaseUrl, getHeaders,userInterface,fetchHepler } from "./test-helper.ts";
 const todoUrl = getBaseUrl();
 
-interface userInterface {
-  username: string;
-  password: string;
-}
-async function register(user: userInterface) {
-  const headers = getHeaders();
-  const response = await fetch(todoUrl + "/auth/register", {
-    method: "POST",
-    body: JSON.stringify(user),
-    headers: headers,
-  });
+ 
+async function register(user: userInterface) { 
+ fetchHepler.setUrl(todoUrl + "/auth/register")
+  const response = await fetchHepler.POST(JSON.stringify(user))
   const jsonData = await response.json();
   return jsonData;
 }
 
-async function login(user: userInterface) {
-  const headers = getHeaders();
-  const response = await fetch(todoUrl + "/auth/login", {
-    method: "POST",
-    body: JSON.stringify(user),
-    headers,
-  });
-  const jsonData = await response.json();
-  return jsonData;
-}
-
-export async function add(obj: Record<string, unknown>,objectName:string, token: string) {
-  const headers = getHeaders(token);
-  const response = await fetch(todoUrl + "/api/v1/objects/"+objectName, {
-    method: "POST",
-    body: JSON.stringify(obj),
-    headers,
-  });
-  const jsonData = await response.json();
-  //await response.
+async function login(user: userInterface) { 
+  fetchHepler.setUrl(todoUrl + "/auth/login")
+   const response = await fetchHepler.POST(JSON.stringify(user))
+   const jsonData = await response.json();
+   return jsonData;
+ }
+ 
+ 
+export async function add(
+  obj: Record<string, unknown>,
+  objectName: string,
+  token: string,
+) {
+  fetchHepler.setUrl(todoUrl + "/api/v1/objects/" + objectName)
+  fetchHepler.setToken(token)
+  fetchHepler.setHeaders()
+  const response = await fetchHepler.POST(JSON.stringify(obj)) 
+  const jsonData = await response.json(); 
   return { jsonData };
 }
-//
 
 export async function getAll(token: string) {
-  const headers = getHeaders(token);
-  const response = await fetch(todoUrl + "/api/v1/objects", {
-    method:"GET",
-    headers,
-  }); 
+  fetchHepler.setUrl(todoUrl + "/api/v1/objects")
+  fetchHepler.setToken(token)
+  fetchHepler.setHeaders()
+  const response = await fetchHepler.GET() 
   const jsonData = await response.json();
-  return jsonData
+  return jsonData;
 }
 
-
-export async function getAllByObjectName(token: string,objectName:string) {
-  const headers = getHeaders(token);
-  const response = await fetch(todoUrl + "/api/v1/objects/"+objectName, {
-    method:"GET",
-    headers,
-  }); 
+ 
+export async function getAllByObjectName(token: string, objectName: string) {
+  fetchHepler.setUrl(todoUrl + "/api/v1/objects/" + objectName)
+  fetchHepler.setToken(token)
+  fetchHepler.setHeaders()
+  const response = await fetchHepler.GET() 
   const jsonData = await response.json();
-  return jsonData
+  return jsonData;
 }
+ 
+
+export async function getAllByObjectNameAndId(
+  token: string,
+  objectName: string,
+  id: number,
+) { 
+  const url = `${todoUrl}/api/v1/objects/${objectName}/${id}`;
+  fetchHepler.setUrl(url)
+  fetchHepler.setToken(token)
+  fetchHepler.setHeaders()
+  const response = await fetchHepler.GET() 
+  const jsonData = await response.json();
+  return jsonData;
+}
+
+const userSidi = { username: "sidi", password: "1234" }
+const obj1 = { text: "first object", isDone: true }
+const obj2 = { text: "test ad", isDone: true }
+Deno.test(
+  "auth user can add  ",
+  async () => { 
+    const r1 = await register(userSidi);
+    localStorage.setItem("token", r1.accessToken); 
+    await add(obj1, "todo", r1.accessToken);
+    const r = await add(obj2,"post",r1.accessToken,);
+    t.assertEquals(r.jsonData.text, "test ad");
+  },
+);
 
 Deno.test(
-  "auth user can adad",
+  "auth user  get by id and object name",
   async () => {
-    // await delay(200)
-    const r1 = await register({ username: "sidi", password: "1234" });
-    localStorage.setItem("token", r1.accessToken);
-    //const r =
-    await add({ text: "first object", isDone: true },"todo", r1.accessToken);
-    const r = await add({ text: "test ad", isDone: true },"post", r1.accessToken); 
-    t.assertEquals(r.jsonData.text, "test ad");
+    const token = localStorage.getItem("token") || "";
+    const r2 = await getAllByObjectNameAndId(token, "todo", 1);
+    //console.log({r2})
+    t.assertEquals(r2.text, "first object");
   },
 );
 
@@ -83,14 +97,12 @@ Deno.test(
 //     const r = await add({text:"test2"},"todo", r1.accessToken);
 //     t.assertEquals(r.jsonData.ownerId, 2);
 //   },
-// );
-
+// ); 
 Deno.test(
   "should be 3 item in arrays of objects",
-  async () => {
-    //await delay(200)
-    const r1 = await login({ username: "sidi", password: "1234" });
-    const r = await getAll(r1.accessToken);  
+  async () => { 
+    const r1 = await login(userSidi);
+    const r = await getAll(r1.accessToken);
     t.assertEquals(r.length, 2);
   },
 );
@@ -99,8 +111,8 @@ Deno.test(
   "should be 2 item in arrays of objects",
   async () => {
     //await delay(200)
-    const r1 = await login({ username: "sidi", password: "1234" });
-    const r = await getAll(r1.accessToken);  
+    const r1 = await login(userSidi);
+    const r = await getAll(r1.accessToken);
     t.assertEquals(r.length, 2);
   },
 );
@@ -109,12 +121,11 @@ Deno.test(
   "getAllByObjectName should be 1 item in arrays of objects",
   async () => {
     //await delay(200)
-    const r1 = await login({ username: "sidi", password: "1234" });
-    const r = await getAllByObjectName(r1.accessToken,"todo");  
+    const r1 = await login(userSidi);
+    const r = await getAllByObjectName(r1.accessToken, "todo");
     t.assertEquals(r.length, 1);
   },
 );
-
 
 // Deno.test(
 //   "auth user can delete only his own todos",

@@ -14,9 +14,8 @@ app.use(
     .prefix("/api/v1/publicobjects")
     .routes(),
 );
-
 app.use(publicObjectRouters.allowedMethods());
-// 
+//  http://localhost:8080/api/v1/publicobjects/todo/1
  
 //
 import { routes as authRoutes } from "../oak-auth-sqlite-app/mod.ts";

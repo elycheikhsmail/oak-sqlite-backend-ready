@@ -1,2 +1,3 @@
 default route
 when given a route not match any route then default route will be used to respond this request
+=> wilcard route

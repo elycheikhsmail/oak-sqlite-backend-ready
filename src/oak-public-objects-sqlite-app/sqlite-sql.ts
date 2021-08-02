@@ -22,6 +22,14 @@ class SqlObj {
     sql += " id = ?  ";
     return sql;
   }
+
+  getByIdAndObjectName() {
+    let sql = " SELECT * FROM ";
+    sql += this.tn;
+    sql += " WHERE ";
+    sql += " id = ? AND objectName = ?  ";
+    return sql;
+  }
 }
 
 const sqlObj = new SqlObj();

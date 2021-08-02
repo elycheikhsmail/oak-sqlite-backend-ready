@@ -9,9 +9,11 @@ in this example you will see : <br>
 # requirement
 deno cli installed
 trex cli intalled (from deno.land/x modules)
+file_server installed  (from deno.land/std modules)
 # init db
 you need to create table by running
 ```
+file_server
 trex run initdb 
 ```
 init db (only one time) <br>
